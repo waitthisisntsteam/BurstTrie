@@ -6,29 +6,52 @@ using System.Threading.Tasks;
 
 namespace BurstTrie
 {
-    public class ContainerNode
+    public class ContainerNode : BurstNode
     {
         public BST<string> Container;
         private int Capacity;
 
-        public ContainerNode(BST<string>container, int capacity) 
+        public override int Count { get { return Container.Count; } }
+
+        public ContainerNode(BST<string>container, int capacity, BurstTrie parentTrie) 
+            : base(parentTrie)
         {
             Container = container;
-            Capacity = capacity; 
+            Capacity = capacity;
+            ParentTrie = parentTrie;
         }
 
-        public void Insert (string data)
+        public override BurstNode Insert (string data, int index)
         {
-            Container.Insert(data);
-
-            if (Container.Count > 5)
+            if (Count <= 5)
             {
-
+                Container.Insert(data);
             }
+            else
+            {
+                //create internal node
+            }
+
+            return this;
         }
-        public void Remove(string data)
+
+        public override BurstNode? Remove(string data, int index, out bool removed )
         {
-            Container.Remove(data);
+            BSTNode<string>? removedNode = null;
+
+            removed = Container.Remove(data, out removedNode);
+
+            return default;
+        }
+
+        public override BurstNode? Search(string prefix, int index)
+        {
+            return default;
+        }
+
+        internal override void GetAll()
+        {
+
         }
     }
 }

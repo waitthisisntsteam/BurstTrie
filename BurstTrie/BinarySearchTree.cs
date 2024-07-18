@@ -120,15 +120,17 @@ namespace BurstTrie
             return false;
         }
 
-        public bool Remove(T data)
+        public bool Remove(T data, out BSTNode<T>? removedNode)
         {
             var current = Search(data);
             if (Count == 0)
             {
+                removedNode = null;
                 return false;
             }
             else if (current == null)
             {
+                removedNode = null;
                 return false;
             }
             //if current has 2 children
@@ -145,15 +147,18 @@ namespace BurstTrie
                 Count--;
                 if (current == Root)
                 {
+                    removedNode = Root;
                     Root = null;
                     Count = 0;
                     return true;
                 }
                 if (IsRightChild(current))
                 {
+                    removedNode = current.Parent.Right;
                     current.Parent.Right = null;
                     return true;
                 }
+                removedNode = current.Parent.Left;
                 current.Parent.Left = null;
                 return true;
             }
@@ -178,12 +183,13 @@ namespace BurstTrie
                 {
                     current.Parent.Left = current.Left;
                 }
-
+                removedNode = current.Parent;
                 child.Parent = current.Parent;
                 Count--;
                 return true;
             }
 
+            removedNode = null;
             return false;
         }
 
