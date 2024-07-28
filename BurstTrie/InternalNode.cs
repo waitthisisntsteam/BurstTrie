@@ -8,7 +8,7 @@ namespace BurstTrie
 {
     public class InternalNode : BurstNode
     {
-        public ContainerNode[] Buckets;
+        public BurstNode[]? Buckets;
 
         public override int Count 
         {  
@@ -17,33 +17,69 @@ namespace BurstTrie
                 int counter = 0;
                 for (int i = 0; i < Buckets.Length; i++)
                 {
-                    if (Buckets[i].Count > 0)
-                    {
-                        counter++;
-                    }
+                    if (Buckets[i] != null && Buckets[i].Count > 0) counter++; 
                 }
                 return counter; 
             } 
         }
 
-        public InternalNode (BurstTrie parentTrie)
+        public InternalNode (BurstTrie parentTrie, ContainerNode previousContainer, int index)
             : base (parentTrie)
         {
             ParentTrie = parentTrie;
 
-            //Buckets = [
-            //    "NIL", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
-            //    ];
+            Buckets = new BurstNode[27];
+
+            if (previousContainer != null)
+            {
+                while (previousContainer.Count > 0)
+                {
+                    bool removed = false;
+                    string removedWord = previousContainer.Container.Root.Data;
+
+                    BurstNode? removedBurstNode = previousContainer.Remove(removedWord, index, out removed);
+
+                    if (removed)
+                    {
+                        int bucketIndex = index - 96;
+                        if (Buckets[bucketIndex] == null) Buckets[bucketIndex] = removedBurstNode;
+                        else Buckets[bucketIndex].Insert(removedWord, index);
+                    }
+                }
+            }
         }
 
         public override BurstNode Insert(string value, int index)
         {
-            throw new NotImplementedException();
+            int bucketIndex = index- 96;
+
+            if (Buckets[bucketIndex] == null)
+            {
+                ContainerNode containerNode = new ContainerNode(ParentTrie);
+                containerNode.Insert(value, index);
+
+                Buckets[bucketIndex] = containerNode;
+            }
+            else Buckets[bucketIndex].Insert(value, index);
+
+            return this;
         }
 
         public override BurstNode? Remove(string value, int index, out bool success)
         {
-            throw new NotImplementedException();
+            int bucketIndex = index- 96;
+
+            if (Buckets[bucketIndex] != null)
+            {
+                bool removed = false;
+                var removedNode = Buckets[bucketIndex].Remove(value, index, out removed);
+
+                success = removed;
+                return removedNode;
+            }
+
+            success = false;
+            return null;
         }
 
         public override BurstNode? Search(string prefix, int index)

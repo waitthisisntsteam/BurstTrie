@@ -23,14 +23,8 @@ namespace BurstTrie
             get
             {
                 int count = 0;
-                if (Left != null)
-                {
-                    count++;
-                }
-                if (Right != null)
-                {
-                    count++;
-                }
+                if (Left != null) count++;
+                if (Right != null) count++;
                 return count;
             }
         }

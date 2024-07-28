@@ -9,39 +9,35 @@ namespace BurstTrie
     public class ContainerNode : BurstNode
     {
         public BST<string> Container;
-        private int Capacity;
 
-        public override int Count { get { return Container.Count; } }
+        public override int Count => Container.Count;
 
-        public ContainerNode(BST<string>container, int capacity, BurstTrie parentTrie) 
+        public ContainerNode(BurstTrie parentTrie) 
             : base(parentTrie)
         {
-            Container = container;
-            Capacity = capacity;
+            Container = new BST<string>();
             ParentTrie = parentTrie;
         }
 
         public override BurstNode Insert (string data, int index)
         {
-            if (Count <= 5)
-            {
-                Container.Insert(data);
-            }
-            else
-            {
-                //create internal node
-            }
+            if (Count < ParentTrie.ContainerCapacity) Container.Insert(data);
+            if (Count >= ParentTrie.ContainerCapacity) return new InternalNode(ParentTrie, this, index);
 
             return this;
         }
 
-        public override BurstNode? Remove(string data, int index, out bool removed )
+        public override BurstNode? Remove(string data, int index, out bool removed)
         {
-            BSTNode<string>? removedNode = null;
+            BSTNode<string>? removedBSTNode = null;
+            removed = Container.Remove(data, out removedBSTNode);
+            
+            if (!removed) return null;
 
-            removed = Container.Remove(data, out removedNode);
+            var removedBurstNode = new ContainerNode(ParentTrie);
+            removedBurstNode.Insert(removedBSTNode.Data, index);
 
-            return default;
+            return removedBurstNode;
         }
 
         public override BurstNode? Search(string prefix, int index)

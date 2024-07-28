@@ -11,21 +11,25 @@ namespace BurstTrie
         public int Count { get; set; }
         public int ContainerCapacity { get; set; }
 
-        public BurstNode? Root;
+        public BurstNode Root;
 
         public BurstTrie() 
         {
-            //Root = new ContainerNode();
+            ContainerCapacity = 5;
+            Root = new ContainerNode(this);
         }
 
-        public void Insert (string data)
+        public void Insert (string data, int index)
         {
-            if (Root == null)
-            {
-                //Root.Insert(data);
+            var nodeReturned = Root.Insert(data, index);
+            Root = nodeReturned;
+        }
 
-                
-            }
+        public bool Remove (string data) 
+        { 
+            bool removed = false;
+            Root.Remove(data, 0, out removed); 
+            return removed;
         }
     }
 }
