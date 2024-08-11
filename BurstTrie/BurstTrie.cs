@@ -13,9 +13,9 @@ namespace BurstTrie
 
         public BurstNode Root;
 
-        public BurstTrie() 
+        public BurstTrie(int containerCapacity) 
         {
-            ContainerCapacity = 5;
+            ContainerCapacity = containerCapacity;
             Root = new ContainerNode(this);
         }
 
@@ -30,5 +30,9 @@ namespace BurstTrie
             Root.Remove(data, 0, out removed); 
             return removed;
         }
+
+        public BurstNode? Search (string data) => Root.Search(data, 0);
+
+        public List<string> GetAll() => Root.GetAll();
     }
 }

@@ -42,12 +42,25 @@ namespace BurstTrie
 
         public override BurstNode? Search(string prefix, int index)
         {
-            return default;
+            var words = Container.InOrderTraversal();
+            foreach (var w in words)
+            {
+                if (w == prefix) return this;
+            }
+            return null;
         }
 
-        internal override void GetAll()
+        internal override List<string> GetAll()
         {
+            List<string> values = new List<string>();   
 
+            var words = Container.InOrderTraversal();
+            foreach (var w in words)
+            {
+                values.Add(w);
+            }
+
+            return values;
         }
     }
 }

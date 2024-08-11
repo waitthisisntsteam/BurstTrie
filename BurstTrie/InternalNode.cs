@@ -31,7 +31,6 @@ namespace BurstTrie
                 if (bucketIndex < 0) throw new Exception("Bucket Index out of range.");
                 return bucketIndex;
             }
-
             return 0;
         }
 
@@ -39,7 +38,6 @@ namespace BurstTrie
             : base (parentTrie)
         {
             ParentTrie = parentTrie;
-
             Buckets = new BurstNode[27];
 
             if (previousContainer != null)
@@ -48,14 +46,13 @@ namespace BurstTrie
                 {
                     bool removed = false;
                     string removedWord = previousContainer.Container.Root.Data;
-
-                    BurstNode? removedBurstNode = previousContainer.Remove(removedWord, index, out removed);
+                    BurstNode? removedBurstNode = previousContainer.Remove(removedWord, index, out removed);        
 
                     if (removed)
                     {
                         int bucketIndex = GetBucketIndex(removedWord, index);
                         if (Buckets[bucketIndex] == null) Buckets[bucketIndex] = removedBurstNode;
-                        else Buckets[bucketIndex].Insert(removedWord, index);
+                        else Buckets[bucketIndex] = Buckets[bucketIndex].Insert(removedWord, index + 1);
                     }
                 }
             }
@@ -90,11 +87,28 @@ namespace BurstTrie
 
         public override BurstNode? Search(string prefix, int index)
         {
-            throw new NotImplementedException();
+            BurstNode? searchedNode = null;
+
+            foreach (var n in Buckets)
+            {
+                if (n != null)
+                {
+                    searchedNode = n.Search(prefix, index);
+                    if (searchedNode != null) break;
+                }
+            }
+
+            return searchedNode;
         }
 
-        internal override void GetAll()
+        internal override List<string> GetAll()
         {
+            List<string> words = new List<string>();
+            foreach (var n in Buckets)
+            {
+                if (n != null) words.AddRange(n.GetAll());
+            }
+            return words;
         }
     }
 }

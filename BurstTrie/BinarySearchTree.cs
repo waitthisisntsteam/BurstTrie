@@ -159,5 +159,27 @@ namespace BurstTrie
             while (node.Left != null) node = node.Left;
             return node;
         }
+
+        public List<T> InOrderTraversal()
+        {
+            List<T> nodes = new List<T>();
+            Stack<BSTNode<T>> stack = new Stack<BSTNode<T>>();
+            var node = Root;
+            while (stack.Count > 0 || node != null)
+            {
+                if (node != null)
+                {
+                    stack.Push(node);
+                    node = node.Left;
+                }
+                else
+                {
+                    node = stack.Pop();
+                    nodes.Add(node.Data);
+                    node = node.Right;
+                }
+            }
+            return nodes;
+        }
     }
 }
