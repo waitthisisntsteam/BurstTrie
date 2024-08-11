@@ -24,7 +24,17 @@
             var b = burstTrie.Search("bobby");
             var words = burstTrie.GetAll();
 
-            ;
+            List<string> wordsToBeSorted= new List<string>();
+            wordsToBeSorted.Add("bob");
+            wordsToBeSorted.Add("abe");
+            wordsToBeSorted.Add("ace");
+            wordsToBeSorted.Add("bobby");
+            wordsToBeSorted.Add("lee");
+
+
+            var burstSort = burstTrie.BurstSort(wordsToBeSorted);
+
+            Console.ReadKey();
         }
     }
 }

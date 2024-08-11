@@ -13,10 +13,7 @@ namespace BurstTrie
         public BSTNode<T>? Right;
         public T Data;
 
-        public BSTNode(T data)
-        {
-            Data = data;
-        }
+        public BSTNode(T data) => Data = data;
 
         public int ChildCount
         {
