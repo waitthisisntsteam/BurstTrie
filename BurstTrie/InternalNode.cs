@@ -23,6 +23,18 @@ namespace BurstTrie
             } 
         }
 
+        private int GetBucketIndex (string value, int index)
+        {
+            if (index < value.Length)
+            {
+                int bucketIndex = value[index] - 96;
+                if (bucketIndex < 0) throw new Exception("Bucket Index out of range.");
+                return bucketIndex;
+            }
+
+            return 0;
+        }
+
         public InternalNode (BurstTrie parentTrie, ContainerNode previousContainer, int index)
             : base (parentTrie)
         {
@@ -41,7 +53,7 @@ namespace BurstTrie
 
                     if (removed)
                     {
-                        int bucketIndex = index - 96;
+                        int bucketIndex = GetBucketIndex(removedWord, index);
                         if (Buckets[bucketIndex] == null) Buckets[bucketIndex] = removedBurstNode;
                         else Buckets[bucketIndex].Insert(removedWord, index);
                     }
@@ -51,28 +63,22 @@ namespace BurstTrie
 
         public override BurstNode Insert(string value, int index)
         {
-            int bucketIndex = index- 96;
+            int bucketIndex = GetBucketIndex(value, index);
 
-            if (Buckets[bucketIndex] == null)
-            {
-                ContainerNode containerNode = new ContainerNode(ParentTrie);
-                containerNode.Insert(value, index);
-
-                Buckets[bucketIndex] = containerNode;
-            }
-            else Buckets[bucketIndex].Insert(value, index);
+            if (Buckets[bucketIndex] == null) Buckets[bucketIndex] = new ContainerNode(ParentTrie);
+            Buckets[bucketIndex] = Buckets[bucketIndex].Insert(value, index + 1);
 
             return this;
         }
 
         public override BurstNode? Remove(string value, int index, out bool success)
         {
-            int bucketIndex = index- 96;
+            int bucketIndex = GetBucketIndex(value, index);
 
             if (Buckets[bucketIndex] != null)
             {
                 bool removed = false;
-                var removedNode = Buckets[bucketIndex].Remove(value, index, out removed);
+                var removedNode = Buckets[bucketIndex].Remove(value, index + 1, out removed);
 
                 success = removed;
                 return removedNode;

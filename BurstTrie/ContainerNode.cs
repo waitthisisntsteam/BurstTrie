@@ -21,7 +21,7 @@ namespace BurstTrie
 
         public override BurstNode Insert (string data, int index)
         {
-            if (Count < ParentTrie.ContainerCapacity) Container.Insert(data);
+            Container.Insert(data);
             if (Count >= ParentTrie.ContainerCapacity) return new InternalNode(ParentTrie, this, index);
 
             return this;

@@ -14,7 +14,7 @@ namespace BurstTrie
         public T Data;
 
         public BSTNode(T data)
-        {             
+        {
             Data = data;
         }
 

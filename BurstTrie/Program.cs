@@ -6,17 +6,22 @@
         {
             BurstTrie burstTrie = new();
 
-            burstTrie.Insert("bob", 'b');
-            burstTrie.Insert("bill", 'b');
-            burstTrie.Insert("a", 'a');
-            burstTrie.Insert("adam", 'a');
-            burstTrie.Insert("screen", 's');
+            burstTrie.Insert("bob");
+            burstTrie.Insert("bill");
+            burstTrie.Insert("a");
+            burstTrie.Insert("adam");
+            burstTrie.Insert("screen");
             //burst
 
-            burstTrie.Insert("abe", 'a');
-            burstTrie.Insert("ace", 'a');
-            burstTrie.Insert("aces", 'a' + 1);
+            burstTrie.Insert("abe");
+            burstTrie.Insert("ace");
+            burstTrie.Insert("aces");
             //burst
+
+            burstTrie.Insert("bobbies");
+            burstTrie.Insert("bobb");
+            burstTrie.Insert("bobs");
+            burstTrie.Insert("bobby");
 
             ;
         }

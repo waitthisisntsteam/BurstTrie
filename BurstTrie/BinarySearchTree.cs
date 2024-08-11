@@ -143,7 +143,8 @@ namespace BurstTrie
                 else if (IsRightChild(current)) current.Parent.Right = child;
                 else current.Parent.Left = child;
 
-                removedNode = child.Parent;
+                if (foundRemoved != null) removedNode = foundRemoved;
+                else removedNode = child.Parent;
                 child.Parent = current.Parent;
                 Count--;
                 return true;

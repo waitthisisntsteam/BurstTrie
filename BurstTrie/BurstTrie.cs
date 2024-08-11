@@ -19,10 +19,9 @@ namespace BurstTrie
             Root = new ContainerNode(this);
         }
 
-        public void Insert (string data, int index)
+        public void Insert (string data)
         {
-            var nodeReturned = Root.Insert(data, index);
-            Root = nodeReturned;
+            Root = Root.Insert(data, 0);
         }
 
         public bool Remove (string data) 
